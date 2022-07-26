@@ -6,10 +6,10 @@ import UserModel from '../repository/models/user.model'
 export class AppService {
   async getUsers() {
     const mongoDB = new MongoDB();
-    await mongoDB.connect();
+    // await mongoDB.connect();
     const data = await UserModel.find({})
-    mongoDB.close()
-    
+    // mongoDB.close()
+
     return data;
   }
 }

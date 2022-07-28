@@ -1,4 +1,4 @@
-import constant from "../utils/constant";
+import constant from "../../utils/constant";
 require('dotenv').config()
 
 

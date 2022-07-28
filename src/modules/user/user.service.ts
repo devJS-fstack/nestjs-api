@@ -9,8 +9,8 @@ export default class UserService {
 
     constructor(@InjectModel('user') private readonly userModel: Model<UserInterface>) { }
 
-    signIn = async (event: any) => {
-        return event
+    signIn = async ({ username }: any = {}) => {
+        return await this.userModel.findOne({ username })
     }
 
     createUser = async ({ username, email, name, age }) => {
@@ -21,6 +21,10 @@ export default class UserService {
             age
         })
         return await newUser.save()
+    }
+
+    listUser = async () => {
+        return await this.userModel.find({})
     }
 
 }

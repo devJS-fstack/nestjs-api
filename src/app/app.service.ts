@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import UserModel from '../repository/models/user.model'
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class AppService { }
+export class AppService {}

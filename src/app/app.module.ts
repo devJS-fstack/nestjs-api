@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import mongoConfig from '../config/mongo.config'
+import { AnimalModule } from 'src/modules/animal/animal.module';
 
 @Module({
   imports: [
@@ -12,7 +13,8 @@ import mongoConfig from '../config/mongo.config'
       isGlobal: true,
     }),
     MongooseModule.forRoot(mongoConfig.url),
-    UserModule
+    UserModule,
+    AnimalModule
   ],
   controllers: [AppController],
   providers: [AppService],

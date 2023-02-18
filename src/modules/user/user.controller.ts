@@ -1,11 +1,10 @@
-import { Body, Controller, Get, Post, Query, Req, Res, UsePipes } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
 import UserService from "./user.service";
-import PipeBefore from "../../core/validation/pipeBefore";
 
-@Controller("")
+@Controller("users/")
 export class UserController {
     constructor(private readonly userService: UserService) {}
-    @Post("user/signin")
+    @Post("signin")
     async signIn(@Res() res: any, @Body() body: any) {
         res.status(200).json({
             message: "success",
@@ -13,7 +12,7 @@ export class UserController {
         });
     }
 
-    @Post("user/signup")
+    @Post("signup")
     async signUp(@Req() req: any, @Res() res: any) {
         const body = req.body;
         const data = await this.userService.createUser(body);
@@ -23,7 +22,7 @@ export class UserController {
         });
     }
 
-    @Get("users")
+    @Get("")
     async getListUser(@Req() req: any, @Res() res: any) {
         res.status(200).json({
             message: "success",

@@ -1,11 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { IUser } from "../../interfaces";
+import { UserDocument } from "../../schemas/user.schema"
 
 @Injectable()
 export default class UserService {
-    constructor(@InjectModel("user") private readonly userModel: Model<IUser>) {}
+    constructor(@InjectModel("user") private readonly userModel: Model<UserDocument>) {}
 
     signIn = async ({ username }: any = {}) => {
         return await this.userModel.findOne({ username });

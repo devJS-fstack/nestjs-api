@@ -9,11 +9,17 @@ export const PETFINDER_INTEGRATION = {
         },
         GET_ANIMAL: {
             url: "https://api.petfinder.com/v2/animals",
-        }
+        },
     },
     AUTHORIZATION: {
         clientId: "Dg6YtzebbTBDZJ6lTC1SBESBo2k8plZRx4ZW5SdmAxLmDccCKO",
         clientSecret: "iXxN3SFJ53gCcwCKnCnHk9kdlKUDbeqUFHIJPevS",
         grantType: "client_credentials",
-    }
-}
+    },
+};
+
+export const TYPE_LOGIN = {
+    FACEBOOK: "FACEBOOK",
+    GOOGLE: "GOOGLE",
+    DEFAULT: "DEFAULT",
+};

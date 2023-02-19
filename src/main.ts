@@ -10,6 +10,6 @@ async function bootstrap() {
         methods: "GET,POST,PUT,PATCH,DELETE",
         maxAge: 30,
     });
-    await app.listen(process.env.PORT || 3000);
+    await app.listen(process.env.PORT || 3900);
 }
 bootstrap();

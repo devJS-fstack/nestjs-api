@@ -10,7 +10,7 @@ import { TYPE_LOGIN } from "../../utils/constants";
 export default class UserService {
     constructor(@InjectModel("user") private readonly userModel: Model<UserDocument>) {}
 
-    login = async ({ email, password, username }: Partial<IUser>) => {
+    login = async ({ email, password, username, typeLogin, fullName }: Partial<IUser>) => {
         const isExist = await this.userModel
             .findOne({
                 $or: [
@@ -23,10 +23,35 @@ export default class UserService {
                 ],
             })
             .lean();
+
+        if (typeLogin !== TYPE_LOGIN.DEFAULT) {
+            const newUser: IUser = {
+                email,
+                fullName,
+                typeLogin,
+                username: email,
+                password: "",
+            };
+            const accessToken = new BaseAuthentication().generateToken(newUser);
+            if (isExist) {
+                return {
+                    ...isExist,
+                    accessToken,
+                };
+            }
+
+            const resultUser = await new this.userModel(newUser).save();
+            return {
+                ...newUser,
+                _id: resultUser._id,
+                accessToken,
+            };
+        }
+
         if (!isExist) {
             throw new HttpException("User not found", 401);
         }
-        if (isExist.password !== password && isExist.typeLogin === TYPE_LOGIN.DEFAULT) {
+        if (isExist.password !== password) {
             throw new UnauthorizedException();
         }
         const accessToken = new BaseAuthentication().generateToken(isExist);
@@ -38,16 +63,45 @@ export default class UserService {
     };
 
     createUser = async (user: IUser) => {
-        const isExistEmail = await this.userModel.findOne({ email: user.email });
-        if (isExistEmail) {
-            throw new HttpException("Email already existed", 400);
+        const isExistUser = await this.userModel
+            .findOne({
+                $or: [
+                    {
+                        email: user.email,
+                    },
+                    {
+                        username: user.username,
+                    },
+                ],
+            })
+            .lean();
+        let resultUser: UserDocument;
+        const accessToken = new BaseAuthentication().generateToken(user);
+        if (user.typeLogin !== TYPE_LOGIN.DEFAULT) {
+            if (!isExistUser) {
+                resultUser = await new this.userModel(user).save();
+                return {
+                    ...user,
+                    _id: resultUser._id,
+                    accessToken,
+                };
+            }
+
+            return {
+                ...isExistUser,
+                accessToken,
+            };
         }
-        const isExistUsername = await this.userModel.findOne({ username: user.username });
-        if (isExistUsername) {
-            throw new HttpException("Username already existed", 400);
+        if (isExistUser) {
+            let message = "<field> already existed";
+            if (isExistUser.email === user.email) {
+                message = message.replace("<field>", "Email");
+            } else if (isExistUser.username === user.username) {
+                message = message.replace("<field>", "User name");
+            }
+            throw new HttpException(message, 400);
         }
         const newUser = await new this.userModel(user).save();
-        const accessToken = new BaseAuthentication().generateToken(user);
         return {
             ...user,
             _id: newUser._id,

@@ -26,4 +26,8 @@ export const loginSchema = Joi.object({
         then: validateString("email"),
     }),
     typeLogin: validateEnumString(["FACEBOOK", "GOOGLE", "DEFAULT"], "typeLogin"),
+    fullName: Joi.when("typeLogin", {
+        is: Joi.valid("FACEBOOK", "GOOGLE"),
+        then: validateString("fullName"),
+    }),
 });

@@ -9,7 +9,7 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
     @Post("login")
     @UsePipes(new BaseValidationPipe(loginSchema))
-    async signIn(@Res() res: any, @Body() body: IUser) {
+    async login(@Res() res: any, @Body() body: IUser) {
         res.status(200).json({
             message: "success",
             data: await this.userService.login(body),

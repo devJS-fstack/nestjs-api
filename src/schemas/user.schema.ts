@@ -15,6 +15,8 @@ export class IUser {
     password: string;
     @Prop()
     typeLogin: string;
+    @Prop()
+    imgUrl: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(IUser);

@@ -68,7 +68,7 @@ export class AnimalService {
         return result.data;
     }
 
-    async get({ limit, skip, type }: { limit: number; skip: number; type: string }) {
+    async getList({ limit, skip, type }: { limit: number; skip: number; type: string }) {
         return this.animalModel.find(
             {
                 type: new RegExp(type, "i"),
@@ -76,5 +76,9 @@ export class AnimalService {
             {},
             { limit, skip },
         );
+    }
+
+    async getById(id: string) {
+        return this.animalModel.findById(id);
     }
 }

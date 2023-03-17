@@ -10,7 +10,7 @@ import { TYPE_LOGIN } from "../../utils/constants";
 export default class UserService {
     constructor(@InjectModel("user") private readonly userModel: Model<UserDocument>) {}
 
-    login = async ({ email, password, username, typeLogin, fullName }: Partial<IUser>) => {
+    login = async ({ email, password, username, typeLogin, fullName, imgUrl }: Partial<IUser>) => {
         const isExist = await this.userModel
             .findOne({
                 $or: [
@@ -31,6 +31,7 @@ export default class UserService {
                 typeLogin,
                 username: email,
                 password: "",
+                imgUrl,
             };
             const accessToken = new BaseAuthentication().generateToken(newUser);
             if (isExist) {

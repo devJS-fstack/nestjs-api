@@ -10,6 +10,7 @@ export const signupSchema = Joi.object({
         then: validateString("password"),
     }),
     typeLogin: validateEnumString(["FACEBOOK", "GOOGLE", "DEFAULT"], "typeLogin"),
+    imgUrl: validateString("Image URL").optional(),
 });
 
 export const loginSchema = Joi.object({
@@ -30,4 +31,5 @@ export const loginSchema = Joi.object({
         is: Joi.valid("FACEBOOK", "GOOGLE"),
         then: validateString("fullName"),
     }),
+    imgUrl: validateString("Image URL").optional(),
 });

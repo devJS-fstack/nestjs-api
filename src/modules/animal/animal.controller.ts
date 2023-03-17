@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UsePipes } from "@nestjs/common";
+import { Controller, Get, Param, Query, UsePipes } from "@nestjs/common";
 import { ingestDataFrom3Party, getAnimal } from "../../validation/animal";
 import { AnimalService } from "./animal.service";
 import { BaseValidationPipe } from "../../validation/base";
@@ -15,11 +15,17 @@ export class AnimalController {
 
     @Get("")
     @UsePipes(new BaseValidationPipe(getAnimal))
-    async get(@Query() query) {
-        const limit = 20;
+    async getList(@Query() query) {
+        const limit = 10;
         const { page = 1, type } = query;
         const skip = (page - 1) * limit;
         console.log("::: GET ANIMAL :::");
-        return this.animalService.get({ limit, skip, type });
+        return this.animalService.getList({ limit, skip, type });
+    }
+
+    @Get("/:id")
+    async getById(@Param() param) {
+        console.log("::: GET ANIMAL BY ID :::", param);
+        return this.animalService.getById(param.id);
     }
 }
